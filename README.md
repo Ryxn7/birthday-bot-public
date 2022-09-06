@@ -11,8 +11,8 @@ v1.3 - 9/6/2022
 
 v1.2 - 9/3/2022
 
-* Implemented AI to generate a quote to go alongside birthday shoutout
 * Made birthday shoutouts automated
+* Implemented AI to generate a quote to go alongside birthday shoutout
 * Embeded messages
 
 
