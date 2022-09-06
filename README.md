@@ -3,7 +3,7 @@
 ## 🎈 Trello
 > View upcoming changes to the Bot [here](https://trello.com/b/1y3e531r/birthday-bot)
 
-## :partypopper: Changelog
+## :tada: Changelog
 
 v1.3 - 9/6/2022
 
