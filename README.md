@@ -30,13 +30,13 @@ Use ```bd.invite``` to get the invite link Birthday Bot!
 > View upcoming changes to Birthday Bot [here](https://trello.com/b/1y3e531r/birthday-bot)
 
 ## :tada: Changelog
-v1.4 - 9/7/2022
+v1.4 - 9/6/2022
 
 * Fixed automated birthday shoutouts
 * Fixed birthday countdown
 * Minor bug fixes
 
-v1.3 - 9/6/2022
+v1.3 - 9/5/2022
 
 * Made birthdays added to bot server-local
 
