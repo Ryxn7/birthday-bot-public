@@ -4,7 +4,7 @@ Birthday bot is the all-in-one bot you need to help keep track of birthdays! (Ma
 ## :partying_face: Invite
 Invite the bot to your own server [here](https://discord.com/oauth2/authorize?client_id=1013565711030956073&scope=bot&permissions=8)!
 
-## :piñata: Commands
+## :crown: Commands
 <details open>
 <summary>Click to expand</summary>
 <br>
