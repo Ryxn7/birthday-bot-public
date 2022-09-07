@@ -145,10 +145,38 @@ class functions(commands.Cog):
                 time = datetime.now()-timedelta(hours=4)
                 bDay = datetime(datetime.now().year, int(birthdates[guildID][0][username][0]), int(birthdates[guildID][0][username][1]), 0, 0, 0, 0)
                 diff = bDay-time
-                
-                if time.month == bDay.month:
+                if time.month < bDay.month: #fix this later
+                    embed = discord.Embed(title = "**Birthday Countdown**   :cake:", color=0xB9BFFF)
+                    embed.add_field(
+                    name = f"{username}'s birthday is in: ",
+                    value = f"{diff.days} days\n{int(diff.seconds/3600)} hours\n{int(diff.seconds%3600/60)} minutes\n{(diff.seconds%3600)%60} seconds\n{diff.microseconds} microseconds\n",
+                    inline = (True)
+                    )
+                    embed.set_footer(text = "By Ryxn and Pancreas")
+                    await ctx.send(embed=embed)
+                elif time.month == bDay.month:
                     if time.day == bDay.day:
-                        await ctx.send(f"Today is {username}'s birthday!")
+                        await ctx.send(f"Today is < {username} >'s birthday!")
+                    elif time.day < bDay.day:
+                        embed = discord.Embed(title = "**Birthday Countdown**   :cake:", color=0xB9BFFF)
+                        embed.add_field(
+                        name = f"{username}'s birthday is in: ",
+                        value = f"{diff.days} days\n{int(diff.seconds/3600)} hours\n{int(diff.seconds%3600/60)} minutes\n{(diff.seconds%3600)%60} seconds\n{diff.microseconds} microseconds\n",
+                        inline = (True)
+                        )
+                        embed.set_footer(text = "By Ryxn and Pancreas")
+                        await ctx.send(embed=embed)
+                    else:
+                        bDay = datetime(datetime.now().year + 1, int(birthdates[guildID][0][username][0]), int(birthdates[guildID][0][username][1]), 0, 0, 0, 0)
+                        diff = bDay-time
+                        embed = discord.Embed(title = "**Birthday Countdown**   :cake:", color=0xB9BFFF)
+                        embed.add_field(
+                        name = f"{username}'s birthday is in: ",
+                        value = f"{diff.days} days\n{int(diff.seconds/3600)} hours\n{int(diff.seconds%3600/60)} minutes\n{(diff.seconds%3600)%60} seconds\n{diff.microseconds} microseconds\n",
+                        inline = (True)
+                        )
+                        embed.set_footer(text = "By Ryxn and Pancreas")
+                        await ctx.send(embed=embed)
                 else:
                     bDay = datetime(datetime.now().year + 1, int(birthdates[guildID][0][username][0]), int(birthdates[guildID][0][username][1]), 0, 0, 0, 0)
                     diff = bDay-time
@@ -163,7 +191,7 @@ class functions(commands.Cog):
             
         except Exception as e:
             logger.exception(e)
-    
+
 
     @commands.command()
     async def bdayshout(self, ctx):
