@@ -16,6 +16,7 @@ with open("data/database.json") as d:
 with open("data/birthdates.json") as b:
     birthdates = json.load(b)
 
+
 class functions(commands.Cog):
 
     def __init__(self,client):
@@ -196,7 +197,7 @@ class functions(commands.Cog):
             logger.exception(e)
     
     
-    @tasks.loop(minutes=1440) #1 day = 1440 minutes
+    @tasks.loop(minutes=1440)
     async def run(self):
         await self.bdaycountdown()
     
