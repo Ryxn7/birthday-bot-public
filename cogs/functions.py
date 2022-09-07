@@ -160,7 +160,7 @@ class functions(commands.Cog):
                     value = f"{diff.days} days\n{int(diff.seconds/3600)} hours\n{int(diff.seconds%3600/60)} minutes\n{(diff.seconds%3600)%60} seconds\n{diff.microseconds} microseconds\n",
                     inline = (True)
                     )
-                    embed.set_footer(text = "By: Ryxn and Pancreas")
+                    embed.set_footer(text = "By Ryxn and Pancreas")
                     await ctx.send(embed=embed)
             
         except Exception as e:
