@@ -1,11 +1,9 @@
 import discord
 from discord.ext import commands, tasks
 from loguru import logger
-import asyncio
 import base64
 import aiohttp
 import json
-from calendar import month_name
 from datetime import datetime, timedelta
 import cohere
 
@@ -168,7 +166,7 @@ class functions(commands.Cog):
     
 
     @commands.command()
-    async def bdaycd(self, ctx):
+    async def bdayshout(self, ctx):
         time = datetime.now() - timedelta(hours=4)
         guildID = str(ctx.guild.id)
         for user in birthdates[guildID][0]:
@@ -195,9 +193,9 @@ class functions(commands.Cog):
 
     @tasks.loop(minutes=1440) #1 day = 1440 minutes
     async def run(self):
-        await self.bdaycountdown()
+        await self.bdayshout()
 
-    async def bdaycountdown(self, ctx):
+    async def bdayshout(self, ctx):
         time = datetime.now()-timedelta(hours=4)
         guildID = str(ctx.guild.id)
         for user in birthdates[guildID][0]:
