@@ -16,7 +16,6 @@ with open("data/database.json") as d:
 with open("data/birthdates.json") as b:
     birthdates = json.load(b)
 
-
 class functions(commands.Cog):
 
     def __init__(self,client):
@@ -145,42 +144,13 @@ class functions(commands.Cog):
                     return await ctx.reply("Please make sure you are entering the information correctly!")
             else:
                 username = input[0]
-                time = datetime.now()
+                time = datetime.now()-timedelta(hours=4)
                 bDay = datetime(datetime.now().year, int(birthdates[guildID][0][username][0]), int(birthdates[guildID][0][username][1]), 0, 0, 0, 0)
                 diff = bDay-time
                 
-                if time.month < bDay.month: #fix this later
-                    embed = discord.Embed(title = "**Birthday Countdown**   :cake:", color=0xB9BFFF)
-                    embed.add_field(
-                    name = f"{username}'s birthday is in: ",
-                    value = f"{diff.days} days\n{int(diff.seconds/3600)} hours\n{int(diff.seconds%3600/60)} minutes\n{(diff.seconds%3600)%60} seconds\n{diff.microseconds} microseconds\n",
-                    inline = (True)
-                    )
-                    embed.set_footer(text = "By: Ryxn and Pancreas")
-                    await ctx.send(embed=embed)
-                elif time.month == bDay.month:
+                if time.month == bDay.month:
                     if time.day == bDay.day:
-                        await ctx.send(f"Today is < {username} >'s birthday!")
-                    elif time.day < bDay.day:
-                        embed = discord.Embed(title = "**Birthday Countdown**   :cake:", color=0xB9BFFF)
-                        embed.add_field(
-                        name = f"{username}'s birthday is in: ",
-                        value = f"{diff.days} days\n{int(diff.seconds/3600)} hours\n{int(diff.seconds%3600/60)} minutes\n{(diff.seconds%3600)%60} seconds\n{diff.microseconds} microseconds\n",
-                        inline = (True)
-                        )
-                        embed.set_footer(text = "By: Ryxn and Pancreas")
-                        await ctx.send(embed=embed)
-                    else:
-                        bDay = datetime(datetime.now().year + 1, int(birthdates[guildID][0][username][0]), int(birthdates[guildID][0][username][1]), 0, 0, 0, 0)
-                        diff = bDay-time
-                        embed = discord.Embed(title = "**Birthday Countdown**   :cake:", color=0xB9BFFF)
-                        embed.add_field(
-                        name = f"{username}'s birthday is in: ",
-                        value = f"{diff.days} days\n{int(diff.seconds/3600)} hours\n{int(diff.seconds%3600/60)} minutes\n{(diff.seconds%3600)%60} seconds\n{diff.microseconds} microseconds\n",
-                        inline = (True)
-                        )
-                        embed.set_footer(text = "By: Ryxn and Pancreas")
-                        await ctx.send(embed=embed)
+                        await ctx.send(f"Today is {username}'s birthday!")
                 else:
                     bDay = datetime(datetime.now().year + 1, int(birthdates[guildID][0][username][0]), int(birthdates[guildID][0][username][1]), 0, 0, 0, 0)
                     diff = bDay-time
@@ -196,23 +166,48 @@ class functions(commands.Cog):
         except Exception as e:
             logger.exception(e)
     
-    
-    @tasks.loop(minutes=1440)
-    async def run(self):
-        await self.bdaycountdown()
-    
 
-    async def bdaycountdown(self, ctx):
-        time = datetime.now()
+    @commands.command()
+    async def bdaycd(self, ctx):
+        time = datetime.now() - timedelta(hours=4)
         guildID = str(ctx.guild.id)
         for user in birthdates[guildID][0]:
             if time.month == int(birthdates[guildID][0][user][0]) and time.day == int(birthdates[guildID][0][user][1]):
                 await ctx.send(f"< {user} > HAPPY BIRTHDAY!")
+                await ctx.send("https://c.tenor.com/8GOADtb93zIAAAAM/cat.gif")
+                
+                with open('cogs/pattern.txt') as f:
+                    pattern = f.read()
+                p = f"{pattern}\n\nName: < {user} >\nOutput:"
+                
+                # Sentence generation
+                co = cohere.Client('XH6WEkN6940HTNO4hl1517Hpl1pX7gW8hpS3RisW')
+                response = co.generate(
+                model='xlarge',
+                prompt = p,
+                max_tokens=100,
+                temperature=0.2,
+                stop_sequences=['--'],
+                k=0,
+                p=0)
+                await ctx.send(response.generations[0].text)
+
+
+    @tasks.loop(minutes=1440) #1 day = 1440 minutes
+    async def run(self):
+        await self.bdaycountdown()
+
+    async def bdaycountdown(self, ctx):
+        time = datetime.now()-timedelta(hours=4)
+        guildID = str(ctx.guild.id)
+        for user in birthdates[guildID][0]:
+            if time.month == int(birthdates[guildID][0][user][0]) and time.day == int(birthdates[guildID][0][user][1]):
+                await ctx.send(f"{user} HAPPY BIRTHDAY!")
                 await ctx.send("https://i.pinimg.com/originals/f8/4b/e4/f84be4356974f6f4c93c1edfdc4e7740.gif")
                 
                 with open('cogs/pattern.txt') as f:
                     pattern = f.read()
-                p = f"{pattern}\n\nName: < @{user} >\nOutput:"
+                p = f"{pattern}\n\nName: < {user} >\nOutput:"
                 
                 # Sentence generation
                 co = cohere.Client('XH6WEkN6940HTNO4hl1517Hpl1pX7gW8hpS3RisW')

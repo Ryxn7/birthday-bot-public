@@ -32,13 +32,13 @@ Name: < @deitznuts123#2987 >
 Output: You know whats crazy, deitznuts123? It's your birthday, I wish you all the best! :))--
 
 Name: < @mommy#1234 >
-Output: mommy, guess what!! Today is your birthday!! Have an awesome day.--
+Output: mommy, guess what!! Today is your birthday!! Have an awesome day!--
 
 Name: < @daddy#4567 >
-Output: Hey daddy! Have an awesome birthday.--
+Output: Hey daddy! Have an awesome birthday!--
 
 Name: < @woof#0000 >
-Output: Happy birthday woof! Hope someone brought you cake.--
+Output: Happy birthday woof! Hope someone brought you cake!--
 
 Name: < @doggo#1237 >
 Output: You know what day it is doggo? ITS YOUR BIRTHDAY!!--

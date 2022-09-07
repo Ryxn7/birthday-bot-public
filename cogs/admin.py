@@ -3,10 +3,8 @@ from discord.ext import commands, tasks
 from loguru import logger
 import json
 
-
 with open("data/database.json") as d:
     database = json.load(d)
-
 
 class admin(commands.Cog):
 
