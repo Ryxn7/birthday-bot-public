@@ -42,6 +42,3 @@ Output: Happy birthday woof! Hope someone brought you cake.--
 
 Name: < @doggo#1237 >
 Output: You know what day it is doggo? ITS YOUR BIRTHDAY!!--
-
-Name: < @chrisussy#1232 >
-Output: HAVE AN AWESOME BIRTHDAY CHRISUSSY!!!--
