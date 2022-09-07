@@ -1,9 +1,14 @@
 # Birthday Bot
 
 ## 🎈 Trello
-> View upcoming changes to the Bot [here](https://trello.com/b/1y3e531r/birthday-bot)
+> View upcoming changes to Birthday Bot [here](https://trello.com/b/1y3e531r/birthday-bot)
 
 ## :tada: Changelog
+v1.4 - 9/7/2022
+
+* Fixed automated birthday shoutouts
+* Fixed birthday countdown
+* Minor bug fixes
 
 v1.3 - 9/6/2022
 
