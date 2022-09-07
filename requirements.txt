@@ -1,0 +1,5 @@
+py-cord
+cohere
+aiohttp
+requests
+loguru
