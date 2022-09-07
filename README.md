@@ -1,5 +1,5 @@
 ## :cake: Birthday Bot
-Birthday bot is the all-in-one bot you need to help keep track of birthdays! (Made with [Pycord](https://docs.pycord.dev/en/stable/) and [Cohere](https://cohere.ai/) Have fun!
+Birthday bot is the all-in-one bot you need to help keep track of birthdays! (Made with [Pycord](https://docs.pycord.dev/en/stable/) and [Cohere](https://cohere.ai/)) Have fun!
 
 ## :partying_face: Invite
 Invite the bot to your own server [here](https://discord.com/oauth2/authorize?client_id=1013565711030956073&scope=bot&permissions=8)!
