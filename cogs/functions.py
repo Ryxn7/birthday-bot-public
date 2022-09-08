@@ -1,11 +1,10 @@
 import discord
 from discord.ext import commands, tasks
 from loguru import logger
-import base64
-import aiohttp
 import json
 from datetime import datetime, timedelta
 import cohere
+from utils.utils import Utils
 
 
 with open("data/database.json") as d:
@@ -28,44 +27,9 @@ class functions(commands.Cog):
         with open('data/birthdates.json', 'w') as z:
             json.dump(birthdates,z,indent=4)
 
+        await Utils.pushdata()
 
-        await self.pushdata()
 
-
-    # Automatically push new data to Github
-    async def pushdata(self):
-        filenames = ["data/birthdates.json"]
-        for filename in filenames:
-            try:
-                token = database["github_oath"]
-                repo = "Ryxn7/Birthday-Bot"
-                branch = "main"
-                url = "https://api.github.com/repos/" + repo + "/contents/" + filename
-
-                base64content = base64.b64encode(open(filename, "rb").read())
-
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(url + '?ref=' + branch, headers={"Authorization": "token " + token}) as data:
-                        data = await data.json()
-                sha = data['sha']
-
-                if base64content.decode('utf-8') + "\n" != data['content']:
-                    message = json.dumps(
-                        {"message": "Automatic data update.",
-                        "branch": branch,
-                        "content": base64content.decode("utf-8"),
-                        "sha": sha}
-                    )
-                    async with aiohttp.ClientSession() as session:
-                        async with session.put(url, data=message, headers={"Content-Type": "application/json",
-                                                                           "Authorization": "token " + token}) as resp:
-                            print(resp)
-                else:
-                    print("Nothing to update.")
-            except Exception as e:
-                logger.exception(e)
-
- 
     @commands.command(aliases=['a'])
     async def add(self, ctx, *desc):
         
@@ -74,62 +38,52 @@ class functions(commands.Cog):
         try:
             # Format is month/day/userID
             if len(input) != 3:
-                return await ctx.reply("Please make sure you are entering the information correctly!")
+                return await ctx.reply("Please enter (month) (day) (@user)!")
             else:
                 username = input[2]
                 month = str(input[0])
                 day = str(input[1])
-                # Create new key if new guild id found
+                # Create new dictionary for new userID
                 if username not in birthdates[guildID][0]:
                     birthdates[guildID][0][username] = []
                 birthdates[guildID][0][username].append(month)
                 birthdates[guildID][0][username].append(day)
                 await ctx.send(username + "'s birthday was added to the Bot")
-        
         except Exception as e:
             logger.exception(e)
             return await ctx.send("```You entered the information incorrectly \:( Please try the command again.```")
-
             
         with open('data/birthdates.json', 'w') as z:
             json.dump(birthdates,z,indent=4)
 
+        await Utils.pushdata()
 
-        await self.pushdata()
 
+    @commands.command(name='?')
+    async def viewbday(self, ctx, *username):
+        name = list(username)
+        guildID = str(ctx.guild.id)
+        try:
+            if len(name) != 1 or name[0] == "":
+                errormsg = "Please enter an @user"
+                await ctx.reply(errormsg)
+            else:
+                user = name[0]
+                month = birthdates[guildID][0][user][0]
+                day = birthdates[guildID][0][user][1]
 
-    # Automatically push new data to Github
-    async def pushdata(self):
-        filenames = ["data/birthdates.json"]
-        for filename in filenames:
-            try:
-                token = database["github_oath"]
-                repo = "Ryxn7/Birthday-Bot"
-                branch = "main"
-                url = "https://api.github.com/repos/" + repo + "/contents/" + filename
+                m, d = Utils.dateFormatter(self, month, day)
 
-                base64content = base64.b64encode(open(filename, "rb").read())
-
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(url + '?ref=' + branch, headers={"Authorization": "token " + token}) as data:
-                        data = await data.json()
-                sha = data['sha']
-
-                if base64content.decode('utf-8') + "\n" != data['content']:
-                    message = json.dumps(
-                        {"message": "Automatic data update.",
-                        "branch": branch,
-                        "content": base64content.decode("utf-8"),
-                        "sha": sha}
-                    )
-                    async with aiohttp.ClientSession() as session:
-                        async with session.put(url, data=message, headers={"Content-Type": "application/json",
-                                                                           "Authorization": "token " + token}) as resp:
-                            print(resp)
-                else:
-                    print("Nothing to update.")
-            except Exception as e:
-                logger.exception(e)
+                embed = discord.Embed(title = "**Birthday**", color=0xf01e2c)
+                embed.add_field(
+                    name = ":partying_face:",
+                    value = f"{user}'s birthday is on {m}/{d}!",
+                    inline = False
+                )
+                await ctx.send(embed=embed)
+        except Exception as e:
+            logger.exception(e)
+            await ctx.send(f"{user}'s birthday was not found on the database.")
 
 
     @commands.command(aliases=['c'])
@@ -145,61 +99,60 @@ class functions(commands.Cog):
                 time = datetime.now()-timedelta(hours=4)
                 bDay = datetime(datetime.now().year, int(birthdates[guildID][0][username][0]), int(birthdates[guildID][0][username][1]), 0, 0, 0, 0)
                 diff = bDay-time
-                if time.month < bDay.month: #fix this later
-                    embed = discord.Embed(title = "**Birthday Countdown**   :cake:", color=0xB9BFFF)
+                if time.month < bDay.month:
+                    embed = discord.Embed(title = "**Birthday Countdown**", color=0xB9BFFF)
                     embed.add_field(
-                    name = f"{username}'s birthday is in: ",
-                    value = f"{diff.days} days\n{int(diff.seconds/3600)} hours\n{int(diff.seconds%3600/60)} minutes\n{(diff.seconds%3600)%60} seconds\n{diff.microseconds} microseconds\n",
-                    inline = (True)
+                        name = ":cake:",
+                        value = f"***{username}'s birthday is in:*** \n{diff.days} days\n{int(diff.seconds/3600)} hours\n{int(diff.seconds%3600/60)} minutes\n{(diff.seconds%3600)%60} seconds\n{diff.microseconds} microseconds\n",
+                        inline = True
                     )
                     embed.set_footer(text = "By Ryxn and Pancreas")
                     await ctx.send(embed=embed)
                 elif time.month == bDay.month:
                     if time.day == bDay.day:
-                        await ctx.send(f"Today is < {username} >'s birthday!")
+                        await ctx.send(f"Today is {username}'s birthday!")
                     elif time.day < bDay.day:
-                        embed = discord.Embed(title = "**Birthday Countdown**   :cake:", color=0xB9BFFF)
+                        embed = discord.Embed(title = "**Birthday Countdown**", color=0xB9BFFF)
                         embed.add_field(
-                        name = f"{username}'s birthday is in: ",
-                        value = f"{diff.days} days\n{int(diff.seconds/3600)} hours\n{int(diff.seconds%3600/60)} minutes\n{(diff.seconds%3600)%60} seconds\n{diff.microseconds} microseconds\n",
-                        inline = (True)
+                            name = ":cake:",
+                            value = f"***{username}'s birthday is in:*** \n{diff.days} days\n{int(diff.seconds/3600)} hours\n{int(diff.seconds%3600/60)} minutes\n{(diff.seconds%3600)%60} seconds\n{diff.microseconds} microseconds\n",
+                            inline = True
                         )
                         embed.set_footer(text = "By Ryxn and Pancreas")
                         await ctx.send(embed=embed)
                     else:
                         bDay = datetime(datetime.now().year + 1, int(birthdates[guildID][0][username][0]), int(birthdates[guildID][0][username][1]), 0, 0, 0, 0)
                         diff = bDay-time
-                        embed = discord.Embed(title = "**Birthday Countdown**   :cake:", color=0xB9BFFF)
+                        embed = discord.Embed(title = "**Birthday Countdown**", color=0xB9BFFF)
                         embed.add_field(
-                        name = f"{username}'s birthday is in: ",
-                        value = f"{diff.days} days\n{int(diff.seconds/3600)} hours\n{int(diff.seconds%3600/60)} minutes\n{(diff.seconds%3600)%60} seconds\n{diff.microseconds} microseconds\n",
-                        inline = (True)
+                            name = ":cake:",
+                            value = f"***{username}'s birthday is in:*** \n{diff.days} days\n{int(diff.seconds/3600)} hours\n{int(diff.seconds%3600/60)} minutes\n{(diff.seconds%3600)%60} seconds\n{diff.microseconds} microseconds\n",
+                            inline = True
                         )
                         embed.set_footer(text = "By Ryxn and Pancreas")
                         await ctx.send(embed=embed)
                 else:
                     bDay = datetime(datetime.now().year + 1, int(birthdates[guildID][0][username][0]), int(birthdates[guildID][0][username][1]), 0, 0, 0, 0)
                     diff = bDay-time
-                    embed = discord.Embed(title = "**Birthday Countdown**   :cake:", color=0xB9BFFF)
+                    embed = discord.Embed(title = "**Birthday Countdown**", color=0xB9BFFF)
                     embed.add_field(
-                    name = f"{username}'s birthday is in: ",
-                    value = f"{diff.days} days\n{int(diff.seconds/3600)} hours\n{int(diff.seconds%3600/60)} minutes\n{(diff.seconds%3600)%60} seconds\n{diff.microseconds} microseconds\n",
-                    inline = (True)
+                        name = ":cake:",
+                        value = f"***{username}'s birthday is in:*** \n{diff.days} days\n{int(diff.seconds/3600)} hours\n{int(diff.seconds%3600/60)} minutes\n{(diff.seconds%3600)%60} seconds\n{diff.microseconds} microseconds\n",
+                        inline = True
                     )
                     embed.set_footer(text = "By Ryxn and Pancreas")
                     await ctx.send(embed=embed)
-            
         except Exception as e:
             logger.exception(e)
 
 
     @commands.command()
-    async def bdayshout(self, ctx):
+    async def shout(self, ctx):
         time = datetime.now() - timedelta(hours=4)
         guildID = str(ctx.guild.id)
         for user in birthdates[guildID][0]:
             if time.month == int(birthdates[guildID][0][user][0]) and time.day == int(birthdates[guildID][0][user][1]):
-                await ctx.send(f"< {user} > HAPPY BIRTHDAY!")
+                await ctx.send(f"Happy Birthday {user}!!!")
                 await ctx.send("https://c.tenor.com/8GOADtb93zIAAAAM/cat.gif")
                 
                 with open('cogs/pattern.txt') as f:
@@ -207,13 +160,13 @@ class functions(commands.Cog):
                 p = f"{pattern}\n\nName: < {user} >\nOutput:"
                 
                 # Sentence generation
-                co = cohere.Client('XH6WEkN6940HTNO4hl1517Hpl1pX7gW8hpS3RisW')
+                co = cohere.Client(database["cohere_token"])
                 response = co.generate(
                 model='xlarge',
                 prompt = p,
                 max_tokens=100,
                 temperature=0.2,
-                stop_sequences=['--'],
+                stop_sequences=['\n'],
                 k=0,
                 p=0)
                 await ctx.send(response.generations[0].text)
@@ -233,7 +186,7 @@ class functions(commands.Cog):
                 
                 with open('cogs/pattern.txt') as f:
                     pattern = f.read()
-                p = f"{pattern}\n\nName: < {user} >\nOutput:"
+                p = f"{pattern}\n\nName: {user} \nOutput:"
                 
                 # Sentence generation
                 co = cohere.Client('XH6WEkN6940HTNO4hl1517Hpl1pX7gW8hpS3RisW')
@@ -242,7 +195,7 @@ class functions(commands.Cog):
                 prompt = p,
                 max_tokens=100,
                 temperature=0.2,
-                stop_sequences=['--'],
+                stop_sequences=['\n'],
                 k=0,
                 p=0)
                 await ctx.send(response.generations[0].text)
