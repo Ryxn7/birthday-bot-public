@@ -3,8 +3,10 @@ from discord.ext import commands, tasks
 from loguru import logger
 import json
 
+
 with open("data/database.json") as d:
     database = json.load(d)
+
 
 class admin(commands.Cog):
 
@@ -19,7 +21,6 @@ class admin(commands.Cog):
     
     @commands.command(aliases=["h"])
     async def help(self, ctx):
-
         user = ctx.author
         embed = discord.Embed(
             title = f"Birthday Bot | Help | {user}",
@@ -54,11 +55,11 @@ class admin(commands.Cog):
         embed.set_footer(text="By Ryxn and Pancreas <3")
         await ctx.send(embed=embed)
     
+
     @commands.command(aliases = ["i"])
     async def invite(self, ctx):
         invite_link = database["invite_link"]
-        await ctx.reply(f"Add Birthday Bot to your own server using this link!" \
-                  f"\n> {invite_link}")
+        await ctx.reply(f"Add Birthday Bot to your own server using this [link]({invite_link})!")
     
 
 def setup(client):
