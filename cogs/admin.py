@@ -34,16 +34,19 @@ class admin(commands.Cog):
 
         embed.add_field(
             name = "Commands List",
-            value = "`bd.add (month) (day) <@userID>` - Command to add a birthday to the database" \
+            value = "`bd.add (month) (day) @user` - Command to add a birthday to the database." \
                     "\n> Aliases: `bd.a (month)`" \
-                    "\n> Example usages: `bd.add 06 02 <@123456789012345678>`"
+                    "\n> Example usages: `bd.add 06 02 @user`"
 
-                    "\n\n`bd.countdown <@userID>`" \
-                    "\n> Returns the birthdays that have been added to this month" \
-                    "\n> Aliases: `bd.c <@userID>`"
+                    "\n\n`bd.countdown @user`" \
+                    "\n> Returns the birthdays that have been added to this month." \
+                    "\n> Aliases: `bd.c @user`"
+
+                    "\n\n`bd.? @user`" \
+                    "\n> Returns user's birthday." \
 
                     "\n\n`bd.invite`" \
-                    "\n> Returns Birthday Bot's Invite Link" \
+                    "\n> Returns Birthday Bot's Invite Link." \
                     "\n> Aliases: `bd.i`",
             inline = False
         )
