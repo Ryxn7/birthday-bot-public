@@ -13,6 +13,7 @@ with open("data/database.json") as d:
 with open("data/birthdates.json") as b:
     birthdates = json.load(b)
 
+
 class functions(commands.Cog):
 
     def __init__(self,client):
@@ -32,7 +33,6 @@ class functions(commands.Cog):
 
     @commands.command(aliases=['a'])
     async def add(self, ctx, *desc):
-        
         input = list(desc)
         guildID = str(ctx.guild.id)
         try:
@@ -74,9 +74,9 @@ class functions(commands.Cog):
 
                 m, d = Utils.dateFormatter(self, month, day)
 
-                embed = discord.Embed(title = "**Birthday**", color=0xf01e2c)
+                embed = discord.Embed(title = "Birthday", color=0xf01e2c)
                 embed.add_field(
-                    name = ":partying_face:",
+                    name = ":tada:",
                     value = f"{user}'s birthday is on {m}/{d}!",
                     inline = False
                 )
@@ -88,7 +88,6 @@ class functions(commands.Cog):
 
     @commands.command(aliases=['c'])
     async def countdown(self, ctx, *desc):
-
         input = list(desc)
         guildID = str(ctx.guild.id)
         try:
@@ -189,7 +188,7 @@ class functions(commands.Cog):
                 p = f"{pattern}\n\nName: {user} \nOutput:"
                 
                 # Sentence generation
-                co = cohere.Client('XH6WEkN6940HTNO4hl1517Hpl1pX7gW8hpS3RisW')
+                co = cohere.Client(database["cohere_token"])
                 response = co.generate(
                 model='xlarge',
                 prompt = p,
