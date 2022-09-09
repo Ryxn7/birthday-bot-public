@@ -15,11 +15,15 @@ Use ```bd.help``` to get the help prompt!
 
 Use ```bd.add (month) (day) @user``` to add a birthday to the bot database!
 
-![image](https://user-images.githubusercontent.com/94326100/188787005-d91721da-6b48-4be4-b86c-05258eb7f36c.png)
+![image](https://user-images.githubusercontent.com/94326100/189268989-8f40073b-94ee-4a00-b883-4f9d37f01742.png)
 
 Use ```bd.countdown @user``` to view the countdown to the user's birthday!
 
-![image](https://user-images.githubusercontent.com/94326100/188787036-57f372eb-c94c-4113-b7a1-f2ca9f4daa66.png)
+![image](https://user-images.githubusercontent.com/94326100/189269031-c7ed2369-ba66-49b3-bae9-a23315cc3185.png)
+
+Use ```bd.? @user``` to view a user's birthday!
+
+![image](https://user-images.githubusercontent.com/94326100/189269112-e9988bf4-503c-4399-9df2-9826de6fb5e4.png)
 
 Use ```bd.invite``` to get the invite link Birthday Bot!
 
