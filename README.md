@@ -27,7 +27,7 @@ Use ```bd.? @user``` to view a user's birthday!
 
 Use ```bd.invite``` to get the invite link Birthday Bot!
 
-![image](https://user-images.githubusercontent.com/94326100/188787132-1c9f0df8-b3f4-4f34-90b4-1757a8f32ab2.png)
+![image](https://user-images.githubusercontent.com/94326100/189269178-f18bde27-1ee3-4aa4-94ab-0b3b3b62bef1.png)
 </details>
 
 ## 🎈 Trello
