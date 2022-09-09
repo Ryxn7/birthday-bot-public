@@ -13,11 +13,11 @@ Use ```bd.help``` to get the help prompt!
 
 ![image](https://user-images.githubusercontent.com/94326100/188786022-b5e70548-6c58-4544-bd24-8ccb20d9ebf2.png)
 
-Use ```bd.add (month) (day) <@userID>``` to add a birthday to the bot database!
+Use ```bd.add (month) (day) @user``` to add a birthday to the bot database!
 
 ![image](https://user-images.githubusercontent.com/94326100/188787005-d91721da-6b48-4be4-b86c-05258eb7f36c.png)
 
-Use ```bd.countdown <@userID>``` to view the countdown to the user's birthday!
+Use ```bd.countdown @user``` to view the countdown to the user's birthday!
 
 ![image](https://user-images.githubusercontent.com/94326100/188787036-57f372eb-c94c-4113-b7a1-f2ca9f4daa66.png)
 
