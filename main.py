@@ -14,7 +14,7 @@ intents.message_content = True
 intents.members = True
 intents.guilds = True
 token = data["token"]
-client = commands.Bot(command_prefix='bd.', case_insensitive=True, intents=intents)
+client = commands.Bot(case_insensitive=True, intents=intents)
 client.remove_command('help')
 
 
