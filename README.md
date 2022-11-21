@@ -37,11 +37,14 @@ Use ``/invite``` to get the invite link Birthday Bot!
 
 v1.8 - 11/20/2022
 
-* 
+* Changed all commands to slash commands
+* Changed ? command to when
+* Minor Bug Fixes
 
 v1.7 - 11/19/2022
 
-* 
+* Updated bd.add to allow users to update their birthdays if entered incorrectly
+* Minor Bug fixes
 
 v1.6 - 9/8/2022
 
